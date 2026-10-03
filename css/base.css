@@ -1,0 +1,50 @@
+﻿:root {
+  --page-bg: #dfe2e8;
+  --shell-bg: #f5f5f5;
+  --card-bg: #ffffff;
+  --soft-bg: #eef7ff;
+  --soft-blue: #dfeeff;
+  --primary: #1d73f5;
+  --primary-dark: #0d4ad3;
+  --text: #1a1d24;
+  --muted: #6d7584;
+  --line: #dfe4eb;
+  --dark: #2d2d32;
+  --green: #0db986;
+  --shadow: 0 18px 30px rgba(21, 34, 60, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--page-bg);
+  color: var(--text);
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 28px 0;
+}
+
+a,
+button {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}

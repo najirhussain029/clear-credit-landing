@@ -1,0 +1,38 @@
+﻿.page-header h1,
+.device-content,
+.browser-bar,
+.status-bar,
+.cta-footer,
+.page-header {
+  max-width: 100%;
+}
+
+.browser-actions .menu-dots {
+  position: relative;
+}
+
+.browser-actions .menu-dots span {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #2d2d32;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.browser-actions .menu-dots::before,
+.browser-actions .menu-dots::after {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #2d2d32;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.browser-actions .menu-dots::before { top: 0; }
+.browser-actions .menu-dots::after { bottom: 0; }
+.browser-actions .menu-dots span { top: 7px; }
