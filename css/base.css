@@ -1,50 +1,74 @@
-﻿:root {
-  --page-bg: #dfe2e8;
-  --shell-bg: #f5f5f5;
-  --card-bg: #ffffff;
-  --soft-bg: #eef7ff;
-  --soft-blue: #dfeeff;
-  --primary: #1d73f5;
-  --primary-dark: #0d4ad3;
-  --text: #1a1d24;
-  --muted: #6d7584;
-  --line: #dfe4eb;
-  --dark: #2d2d32;
-  --green: #0db986;
-  --shadow: 0 18px 30px rgba(21, 34, 60, 0.08);
+﻿/* ==========================================================================
+   Design tokens
+   TODO: replace values with the exact ones from Figma
+   ========================================================================== */
+:root {
+  /* Colors */
+  --color-primary: #0b3c49;
+  --color-accent: #1cc8e0;
+  --color-bg-light: #eefafc;
+  --color-text: #1a2b33;
+  --color-text-muted: #5c6b73;
+  --color-white: #ffffff;
+  --color-border: #d9e6ea;
+
+  /* Typography */
+  --font-main: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fs-body: 1rem;
+  --fs-h1: 3rem;
+  --fs-h2: 2.25rem;
+  --fs-h3: 1.25rem;
+  --lh-body: 1.6;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 3rem;
+  --space-xl: 5rem;
+
+  /* Layout */
+  --container-width: 1200px;
+  --radius: 12px;
 }
 
-* {
+/* ==========================================================================
+   Reset
+   ========================================================================== */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-html, body {
-  margin: 0;
-  min-height: 100%;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: var(--page-bg);
-  color: var(--text);
-}
-
 body {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 28px 0;
+  margin: 0;
+  font-family: var(--font-main);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--color-text);
+  background: var(--color-white);
 }
 
-a,
-button {
-  font: inherit;
-}
-
-button {
-  border: 0;
-  background: none;
-  cursor: pointer;
-}
-
-img {
+img,
+svg {
   max-width: 100%;
   display: block;
+}
+
+a {
+  color: inherit;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+}
+
+.skip-link:focus {
+  left: var(--space-sm);
+  top: var(--space-sm);
+  background: var(--color-white);
+  padding: var(--space-xs) var(--space-sm);
+  z-index: 100;
 }
