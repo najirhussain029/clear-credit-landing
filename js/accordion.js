@@ -1,29 +1,18 @@
-﻿export function initAccordion() {
-  const faqItems = document.querySelectorAll('.faq-item');
-
-  faqItems.forEach((item) => {
-    const button = item.querySelector('.faq-question');
-
-    if (!button) {
-      return;
-    }
-
-    button.addEventListener('click', () => {
-      const isOpen = item.classList.contains('open');
-
-      faqItems.forEach((faqItem) => {
-        faqItem.classList.remove('open');
-        const faqButton = faqItem.querySelector('.faq-question');
-
-        if (faqButton) {
-          faqButton.setAttribute('aria-expanded', 'false');
-        }
-      });
-
-      if (!isOpen) {
-        item.classList.add('open');
-        button.setAttribute('aria-expanded', 'true');
-      }
+// One open item per accordion group; uses aria-expanded for accessibility.
+export function initAccordion() {
+  document.querySelectorAll('[data-accordion]').forEach((group) => {
+    group.addEventListener('click', (e) => {
+      const btn = e.target.closest('.acc-btn');
+      if (!btn) return;
+      const wasOpen = btn.getAttribute('aria-expanded') === 'true';
+      group.querySelectorAll('.acc-item').forEach((item) => setItem(item, false));
+      if (!wasOpen) setItem(btn.closest('.acc-item'), true);
     });
   });
+}
+
+function setItem(item, open) {
+  item.classList.toggle('open', open);
+  item.querySelector('.acc-btn').setAttribute('aria-expanded', open);
+  item.querySelector('.acc-panel').hidden = !open;
 }

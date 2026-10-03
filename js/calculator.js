@@ -1,52 +1,57 @@
-﻿export function initCalculator() {
-  const amountInput = document.querySelector('#loanAmount');
-  const termInput = document.querySelector('#loanTerm');
-  const scoreInput = document.querySelector('#creditScore');
-  const paymentOutput = document.querySelector('#monthlyPayment');
-  const summaryOutput = document.querySelector('#loanSummary');
+const $ = (id) => document.getElementById(id);
+const money = (n) => '$' + Math.round(n).toLocaleString('en-US');
 
-  if (!amountInput || !termInput || !scoreInput || !paymentOutput || !summaryOutput) {
-    return;
-  }
+// Standard amortised loan formula: P*r / (1 - (1+r)^-n)
+function loan(principal, apr, years) {
+  const n = years * 12;
+  const r = apr / 100 / 12;
+  const monthly = r === 0 ? principal / n : (principal * r) / (1 - Math.pow(1 + r, -n));
+  return { monthly, interest: monthly * n - principal };
+}
 
-  const formatCurrency = (value) =>
-    new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0,
-    }).format(value);
+function update() {
+  const amount = Math.max(0, +$('amount').value || 0);
+  const rateOld = Math.max(0, +$('rateOld').value || 0);
+  const rateNew = Math.max(0, +$('rateNew').value || 0);
+  const termOld = +$('termOld').value;
+  const termNew = +$('termNew').value;
+  const o = loan(amount, rateOld, termOld);
+  const n = loan(amount, rateNew, termNew);
+  const saveInt = o.interest - n.interest;
+  const saveMo = o.monthly - n.monthly;
 
-  const getApr = (score) => {
-    if (score >= 760) return 5.99;
-    if (score >= 700) return 6.42;
-    if (score >= 660) return 8.1;
-    if (score >= 620) return 10.7;
-    return 13.4;
-  };
+  $('summary').innerHTML = `With an interest rate of <b>${rateNew.toFixed(2)}%</b> over <b>${termNew} Years</b>, you will pay <b>${money(n.monthly)}</b> per month and <b>${money(n.interest)}</b> in interest over the lifetime of your loan.`;
+  $('saveInterest').textContent = `${money(Math.abs(saveInt))} ${saveInt >= 0 ? '↓' : '↑'}`;
+  $('saveMonthly').textContent = `${money(Math.abs(saveMo))} ${saveMo >= 0 ? '↓' : '↑'}`;
+  $('newInterest').textContent = money(n.interest);
+  $('oldInterest').textContent = money(o.interest);
+  $('newMonthly').textContent = money(n.monthly);
+  $('oldMonthly').textContent = money(o.monthly);
 
-  const updateCalculator = () => {
-    const principal = Number(amountInput.value);
-    const months = Number(termInput.value);
-    const score = Number(scoreInput.value);
-    const apr = getApr(score);
-    const monthlyRate = apr / 100 / 12;
+  const maxI = Math.max(o.interest, n.interest, 1);
+  const maxM = Math.max(o.monthly, n.monthly, 1);
+  $('barNewInt').style.width = (n.interest / maxI) * 100 + '%';
+  $('barOldInt').style.width = (o.interest / maxI) * 100 + '%';
+  $('barNewMo').style.width = (n.monthly / maxM) * 100 + '%';
+  $('barOldMo').style.width = (o.monthly / maxM) * 100 + '%';
+  $('ringInterest').style.setProperty('--p', o.interest ? Math.max(0, saveInt / o.interest) * 100 : 0);
+  $('ringMonthly').style.setProperty('--p', o.monthly ? Math.max(0, saveMo / o.monthly) * 100 : 0);
+}
 
-    let payment = principal * monthlyRate;
-
-    if (monthlyRate === 0) {
-      payment = principal / months;
-    } else {
-      const discountFactor = 1 - Math.pow(1 + monthlyRate, -months);
-      payment = (principal * monthlyRate) / discountFactor;
-    }
-
-    paymentOutput.textContent = formatCurrency(payment);
-    summaryOutput.textContent = `${formatCurrency(principal)} over ${months} months at ${apr.toFixed(2)}% APR`;
-  };
-
-  [amountInput, termInput, scoreInput].forEach((input) => {
-    input.addEventListener('input', updateCalculator);
+export function initCalculator() {
+  const options = Array.from({ length: 7 }, (_, i) => `<option value="${i + 1}">${i + 1} Year${i ? 's' : ''}</option>`).join('');
+  $('termOld').innerHTML = options;
+  $('termNew').innerHTML = options;
+  $('termOld').value = 2;
+  $('termNew').value = 3;
+  $('calcForm').addEventListener('input', update);
+  $('calcForm').addEventListener('submit', (e) => e.preventDefault());
+  $('amountForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const v = +$('heroAmount').value;
+    if (v >= 600 && v <= 200000) $('amount').value = v;
+    update();
+    $('calculator').scrollIntoView({ behavior: 'smooth' });
   });
-
-  updateCalculator();
+  update();
 }
