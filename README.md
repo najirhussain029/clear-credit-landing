@@ -13,6 +13,7 @@ A responsive landing page built from the "Clear Credit Web Landing page" Figma d
 - **Savings calculator** with live results, progress rings and comparison bars
 - "Why choose us" cards, **accordion** services list and FAQ
 - Fully responsive: desktop, laptop, tablet and mobile
+- Optional dark mode toggle (default view is light, matching the Figma design; choice is saved in localStorage)
 
 ## Run locally
 
@@ -34,7 +35,7 @@ css/
   components.css    buttons, slider, accordion, shared UI
   sections.css      section-specific styles + responsive breakpoints
 js/
-  main.js           entry point, mobile nav
+  main.js           entry point, mobile nav, theme toggle
   accordion.js      accessible accordion (services + FAQ)
   slider.js         lender slider
   calculator.js     savings calculator logic
@@ -66,6 +67,10 @@ Tablet and mobile layouts are not in the Figma file, so they are my own adaptati
 
   It computes the current loan and the new loan, then updates the summary sentence, the savings figures, the bars (width relative to the larger value) and the rings (percentage saved). With the default values (1,000 at 10% for 2 years vs 2% for 3 years) it shows $46 / $108 and $29 / $31, matching the design.
 
+## Dark mode
+
+A toggle button in the header switches between light and dark themes. Colors are CSS variables in `css/base.css`, overridden for the dark theme. The choice is stored in `localStorage`. The default view is light, matching the Figma design.
+
 ## Typography
 
 The Figma file uses a rounded geometric grotesque font. I used **Plus Jakarta Sans** (Google Fonts) as the closest available alternative, with a system font fallback.
@@ -96,7 +101,21 @@ Assets provided in the Figma file are used where exported. Items below are place
 
 No external stock images are used. Update this table if any asset is sourced elsewhere.
 
-## Notes
+## Contact & Links
 
-- The phone number in the header and footer is `01737114304`.
-- Loan data (lenders, rates) is static demo content.
+Contact details in the header, footer and social icons were updated from the original design placeholders:
+
+| Item | Value | Where used |
+|---|---|---|
+| Phone | `01737114304` | Header button, footer, `tel:` links |
+| Email | `mnex@credit.al` | Footer, `mailto:` link |
+| LinkedIn | https://www.linkedin.com/company/mnex-group-ltd/posts/ | Footer social icon |
+
+## Changes from the Figma design
+
+The desktop layout follows the Figma file. These are the intentional differences:
+
+- Phone number, email and LinkedIn link replaced with project-specific details
+- Tablet and mobile layouts designed by me (no Figma frames provided)
+- Optional dark mode toggle (default view is light)
+- Lender cards are rendered from a JavaScript array (static demo data)
